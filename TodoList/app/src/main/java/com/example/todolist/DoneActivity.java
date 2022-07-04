@@ -5,6 +5,7 @@ import static java.util.stream.Collectors.mapping;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -27,6 +28,7 @@ public class DoneActivity extends AppCompatActivity implements onMenuItem{
         getIdIntent();
     }
 
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -41,7 +43,7 @@ public class DoneActivity extends AppCompatActivity implements onMenuItem{
     protected void onPostResume() {
         super.onPostResume();
         getDataFromDB();
-        adapter.notifyDataSetChanged();
+        initLv();
     }
 
     private void getDataFromDB() {
@@ -53,7 +55,6 @@ public class DoneActivity extends AppCompatActivity implements onMenuItem{
         onBackBtn();
         initLv();
         onSearchAction();
-
     }
 
     private void initLv() {
@@ -62,6 +63,31 @@ public class DoneActivity extends AppCompatActivity implements onMenuItem{
     }
 
     private void onSearchAction() {
+        sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                ArrayList<Todo> filter = new ArrayList<>();
+                for(Todo e : listToDoDone){
+                    if(e.getName().toLowerCase().contains(newText.toLowerCase())){
+                        filter.add(e);
+                    }
+                }
+                adapter.getList().clear();
+                adapter.updateList(filter);
+                if(TextUtils.isEmpty(newText)){
+                    adapter.getList().clear();
+                    getDataFromDB();
+                    adapter.updateList(listToDoDone);
+                }
+                return true;
+            }
+        });
     }
 
     private void onBackBtn() {
@@ -74,7 +100,6 @@ public class DoneActivity extends AppCompatActivity implements onMenuItem{
         backBtn = findViewById(R.id.backBtnDone);
         sv = findViewById(R.id.sv);
         lv = findViewById(R.id.listViewDone);
-
     }
 
     @Override

@@ -58,6 +58,7 @@ public class HomeActivity extends AppCompatActivity implements onMenuItem{
     protected void onStart() {
         super.onStart();
         setName();
+        getDataFromDB();
     }
 
     private void getDataFromDB() {
@@ -82,7 +83,7 @@ public class HomeActivity extends AppCompatActivity implements onMenuItem{
     @Override
     protected void onPostResume() {
         super.onPostResume();
-        getDataFromDB();
+//        getDataFromDB();
     }
 
     private void initView() {
@@ -142,7 +143,7 @@ public class HomeActivity extends AppCompatActivity implements onMenuItem{
             String end_ = endTxt.getText().toString();
             Todo todo = new Todo(idUser,name,start_,end_, 0);
             db.insertToDo(todo);
-            listToDo.add(todo);
+            adapter.getList().add(todo);
             adapter.notifyDataSetChanged();
             dialogAdd.dismiss();
         });
