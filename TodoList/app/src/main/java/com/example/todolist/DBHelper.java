@@ -124,7 +124,7 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
         return db.delete(TB_TODO_USER,_ID_TODO+"="+todo.getId(),null)>0;
     }
-
+//sqlite crud
     public void updateTodo(Todo todo,int pos){
         int check;
         SQLiteDatabase db = getWritableDatabase();

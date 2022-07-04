@@ -60,8 +60,7 @@ public class TodoAdapter extends BaseAdapter {
     @SuppressLint("ViewHolder")
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
-       LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         convertView = inflater.inflate(layout,null);
         TextView txtNameTodo = convertView.findViewById(R.id.nameTodo);
         TextView txtTimes = convertView.findViewById(R.id.timeS);
@@ -72,7 +71,7 @@ public class TodoAdapter extends BaseAdapter {
         txtTimes.setText(todo.getStartTime());
         txtTimeE.setText(todo.getEndTime());
         ImageButton menuBtn = convertView.findViewById(R.id.menuBtn_i);
-        if(menuBtn!=null) {
+        if(menuBtn != null) {
             menuBtn.setOnClickListener(v -> {
                 onMenuItem.onClickMenu(todo,v);
             });

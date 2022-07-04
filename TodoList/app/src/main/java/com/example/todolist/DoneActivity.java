@@ -66,7 +66,6 @@ public class DoneActivity extends AppCompatActivity implements onMenuItem{
         sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-
                 return true;
             }
 

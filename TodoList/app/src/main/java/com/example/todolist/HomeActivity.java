@@ -183,7 +183,6 @@ public class HomeActivity extends AppCompatActivity implements onMenuItem{
     private void doneActivityTrans() {
         Intent intent = new Intent(this,DoneActivity.class);
         intent.putExtra("id_",idCurrent);
-
         startActivity(intent);
     }
 
@@ -223,6 +222,7 @@ public class HomeActivity extends AppCompatActivity implements onMenuItem{
                 switch (item.getItemId()) {
                     case R.id.delete_btn:
                         db.deleteTodo(todo);
+                        listToDo.remove(todo);
                         adapter.getList().remove(todo);
                         adapter.notifyDataSetChanged();
                         break;
@@ -275,9 +275,11 @@ public class HomeActivity extends AppCompatActivity implements onMenuItem{
                     case R.id.done_btn:
                         DBHelper db = new DBHelper(HomeActivity.this);
                         db.isTodoDone(todo,todo.getId());
+                        adapter.getList().clear();
                         listToDo.clear();
                         getDataFromDB();
                         initLv();
+                        adapter.notifyDataSetChanged();
                         break;
                 }
                 return true;

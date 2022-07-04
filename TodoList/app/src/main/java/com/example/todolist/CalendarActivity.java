@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
-import android.widget.CalendarView.OnDateChangeListener;
 
 public class CalendarActivity extends AppCompatActivity implements onMenuItem {
     ImageButton buttonBack;
@@ -86,7 +85,6 @@ public class CalendarActivity extends AppCompatActivity implements onMenuItem {
     private void initLv() {
         adapter = new TodoAdapter(listTodo,R.layout.layout_cal,this,this);
         lv.setAdapter(adapter);
-
     }
 
     private void onBackBtn() {

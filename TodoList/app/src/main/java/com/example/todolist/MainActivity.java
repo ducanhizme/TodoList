@@ -68,7 +68,6 @@ public class MainActivity extends AppCompatActivity {
                 if(dbHelper.checkAlreadyExistsAccount(user)){
                     toHomeActivity(user.getName(), dbHelper.getIdUser(name,password_));
                     loginDialog.dismiss();
-
                 }else{
                     Toast.makeText(this, "Can't not find this account", Toast.LENGTH_SHORT).show();
                 }
