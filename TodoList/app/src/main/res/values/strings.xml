@@ -6,4 +6,9 @@
     <string name="password">Password</string>
     <string name="name">Name</string>
     <string name="cancel">Cancel</string>
+    <string name="done">Done</string>
+    <string name="calendar">Calendar</string>
+    <string name="delete">Delete</string>
+    <string name="update">Update</string>
+    <string name="done_1">Done</string>
 </resources>

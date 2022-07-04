@@ -7,9 +7,10 @@
     tools:context=".HomeActivity">
 
     <RelativeLayout
-        android:layout_margin="5dp"
+        android:id="@+id/intro_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -22,15 +23,16 @@
             android:text="Welcome to SDL"
             android:textColor="@color/black"
             android:textSize="20sp" />
+
         <TextView
+            android:id="@+id/userName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/userName"
+            android:layout_alignTop="@+id/welcome"
+            android:layout_marginTop="20dp"
             android:text="Username"
             android:textColor="@color/black"
-            android:textSize="30sp"
-            android:layout_alignTop="@+id/welcome"
-            android:layout_marginTop="20dp"/>
+            android:textSize="30sp" />
 
         <ImageButton
             android:id="@+id/logOutBtn"
@@ -43,4 +45,80 @@
             android:src="@drawable/baseline_logout_pink_600_36dp" />
     </RelativeLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="410dp"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/today_view"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/intro_layout">
+
+        <TextView
+            android:id="@+id/todayTxt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/roboto_bold"
+            android:text="day/month/year"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="30sp" />
+
+        <ListView
+            android:layout_margin="20dp"
+            android:id="@+id/lvToday"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/layout_today"/>
+    </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.976"
+        app:srcCompat="@android:drawable/ic_input_add"
+        tools:ignore="ContentDescription" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/floatingActionButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/cal_btn"
+            android:layout_width="150dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/btn_cal"
+            android:drawableTop="@drawable/ic_baseline_calendar_month_24"
+            android:padding="30dp"
+            android:text="@string/calendar"
+            android:textAlignment="center"
+            android:textAllCaps="false"
+            android:textSize="20sp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/done_btn"
+            android:layout_width="150dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="50dp"
+            android:background="@drawable/btn_done"
+            android:drawableTop="@drawable/ic_baseline_done_24"
+            android:padding="30dp"
+            android:text="@string/done"
+            android:textAlignment="center"
+            android:textAllCaps="false"
+            android:textSize="20sp" />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

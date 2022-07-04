@@ -66,7 +66,9 @@ public class MainActivity extends AppCompatActivity {
             User user = new User(name,password_);
             if(!TextUtils.isEmpty(name)&&!TextUtils.isEmpty(password_)){
                 if(dbHelper.checkAlreadyExistsAccount(user)){
-                    toHomeActivity(user.getName());
+                    toHomeActivity(user.getName(), dbHelper.getIdUser(name,password_));
+                    loginDialog.dismiss();
+
                 }else{
                     Toast.makeText(this, "Can't not find this account", Toast.LENGTH_SHORT).show();
                 }
@@ -76,9 +78,10 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void toHomeActivity(String name) {
+    private void toHomeActivity(String name,int id) {
         Intent intent = new Intent(this,HomeActivity.class);
         intent.putExtra("nameUser",name);
+        intent.putExtra("id",id);
         startActivity(intent);
     }
 
@@ -99,11 +102,12 @@ public class MainActivity extends AppCompatActivity {
            String password_ = Objects.requireNonNull(password.getText()).toString();
            User user = new User(name,password_);
            DBHelper dbHelper = new DBHelper(this);
-           if(!TextUtils.isEmpty(name) && !TextUtils.isEmpty(password_)){
+           if(!TextUtils.isEmpty(name) && !TextUtils.isEmpty(password_)&& !dbHelper.checkAlreadyExistsAccount(user)){
                dbHelper.insertUser(user);
-               toHomeActivity(user.getName());
+               toHomeActivity(user.getName(), dbHelper.getIdUser(name,password_));
+               signInDialog.dismiss();
            }else{
-               Toast.makeText(this, "Empty username or password", Toast.LENGTH_SHORT).show();
+               Toast.makeText(this, "Can not sign up", Toast.LENGTH_SHORT).show();
            }
         });
     }
