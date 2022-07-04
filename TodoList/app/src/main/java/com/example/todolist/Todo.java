@@ -11,7 +11,7 @@ public class Todo {
     private String StartTime;
     private String EndTime;
     private String date;
-    private boolean type;
+    private int type;
 
     public Todo(int id, int idUser, String name, String startTime, String endTime, String date) {
         this.id = id;
@@ -22,7 +22,7 @@ public class Todo {
         this.date = date;
     }
 
-    public Todo(int idUser, String name, String startTime, String endTime,boolean type) {
+    public Todo(int idUser, String name, String startTime, String endTime,int type) {
         this.idUser = idUser;
         this.name = name;
         this.StartTime = startTime;
@@ -33,11 +33,11 @@ public class Todo {
     public Todo() {
     }
 
-    public boolean isType() {
+    public int isType() {
         return type;
     }
 
-    public void setType(boolean type) {
+    public void setType(int type) {
         this.type = type;
     }
 
@@ -101,9 +101,10 @@ public class Todo {
                 "id=" + id +
                 ", idUser=" + idUser +
                 ", name='" + name + '\'' +
-                ", StartTime=" + StartTime +
-                ", EndTime=" + EndTime +
-                ", date=" + date +
+                ", StartTime='" + StartTime + '\'' +
+                ", EndTime='" + EndTime + '\'' +
+                ", date='" + date + '\'' +
+                ", type=" + type +
                 '}';
     }
 }

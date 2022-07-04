@@ -80,9 +80,7 @@ public class DBHelper extends SQLiteOpenHelper {
         content.put(_START_TIME,todo.getStartTime());
         content.put(_END_TIME,todo.getEndTime());
         content.put(_DATE,todo.getDate());
-        if(todo.isType()) check =1;
-        else check =0;
-        content.put(_TYPE,check);
+        content.put(_TYPE,todo.isType());
 
         db.insert(TB_TODO_USER,null,content);
     }
@@ -125,5 +123,42 @@ public class DBHelper extends SQLiteOpenHelper {
     public boolean deleteTodo(Todo todo){
         SQLiteDatabase db = getWritableDatabase();
         return db.delete(TB_TODO_USER,_ID_TODO+"="+todo.getId(),null)>0;
+    }
+
+    public void updateTodo(Todo todo,int pos){
+        int check;
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(_ID_USER,todo.getIdUser());
+        cv.put(_NAME_TODO,todo.getName());
+        cv.put(_START_TIME,todo.getStartTime());
+        cv.put(_END_TIME,todo.getEndTime());
+        cv.put(_DATE,todo.getDate());
+        cv.put(_TYPE,todo.isType());
+        db.update(TB_TODO_USER,cv,_ID_TODO+"= "+pos,null);
+    }
+
+    public void  isTodoDone(Todo todo,int pos){
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(_TYPE,1);
+        db.update(TB_TODO_USER,cv,_ID_TODO+"= "+pos,null);
+    }
+
+    public ArrayList<Todo> getDoneTodo(int id_,int type){
+        ArrayList<Todo> listTodo = new ArrayList<>();
+        SQLiteDatabase db = getReadableDatabase();
+        String query = "SELECT * FROM "+TB_TODO_USER+" WHERE "+_ID_USER +"= "+id_ +" AND " +_TYPE +" = "+type;
+        Cursor cursor = db.rawQuery(query, null);
+        while (cursor.moveToNext()){
+            int id = cursor.getInt(0);
+            int idUser = cursor.getInt(1);
+            String nameTodo = cursor.getString(2);
+            String startTime = cursor.getString(3);
+            String endTime = cursor.getString(4);
+            String date = cursor.getString(5);
+            listTodo.add(new Todo(id,idUser,nameTodo,startTime,endTime,date));
+        }
+        return listTodo;
     }
 }

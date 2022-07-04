@@ -15,7 +15,6 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.timepicker.MaterialTimePicker;
@@ -28,7 +27,7 @@ import java.util.Locale;
 import java.util.Objects;
 
 
-public class HomeActivity extends AppCompatActivity{
+public class HomeActivity extends AppCompatActivity implements onMenuItem{
     private String username ;
     private TextView userNameTXT;
     private TextView todayTxt;
@@ -73,6 +72,7 @@ public class HomeActivity extends AppCompatActivity{
         }
     }
 
+
     private String getCurrentDate() {
         SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy", new Locale("vi","VN"));
         Date date = new Date();
@@ -94,7 +94,7 @@ public class HomeActivity extends AppCompatActivity{
     }
 
     private void initLv() {
-        adapter = new TodoAdapter(listToDo,R.layout.layout_today,this);
+        adapter = new TodoAdapter(listToDo,R.layout.layout_today,this,this);
         lvToday.setAdapter(adapter);
     }
 
@@ -140,8 +140,7 @@ public class HomeActivity extends AppCompatActivity{
             String name = nameEdit.getText().toString();
             String start_ = startTxt.getText().toString();
             String end_ = endTxt.getText().toString();
-            Todo todo = new Todo(idUser,name,start_,end_, false);
-            Toast.makeText(this, todo.toString(), Toast.LENGTH_SHORT).show();
+            Todo todo = new Todo(idUser,name,start_,end_, 0);
             db.insertToDo(todo);
             listToDo.add(todo);
             adapter.notifyDataSetChanged();
@@ -182,7 +181,8 @@ public class HomeActivity extends AppCompatActivity{
 
     private void doneActivityTrans() {
         Intent intent = new Intent(this,DoneActivity.class);
-        intent.putExtra("id",idCurrent);
+        intent.putExtra("id_",idCurrent);
+
         startActivity(intent);
     }
 
@@ -209,4 +209,79 @@ public class HomeActivity extends AppCompatActivity{
     }
 
 
+    @Override
+    public void onClickMenu(Todo todo, View view) {
+        DBHelper db = new DBHelper(this);
+        PopupMenu popupMenu = new PopupMenu(this, view);
+        popupMenu.getMenuInflater().inflate(R.menu.menu, popupMenu.getMenu());
+        popupMenu.show();
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @SuppressLint("NonConstantResourceId")
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.delete_btn:
+                        db.deleteTodo(todo);
+                        adapter.getList().remove(todo);
+                        adapter.notifyDataSetChanged();
+                        break;
+                    case R.id.update_btn:
+                        Dialog dialogAdd = new Dialog(HomeActivity.this);
+                        dialogAdd.setContentView(R.layout.add_dialog);
+                        AppCompatButton startTime = dialogAdd.findViewById(R.id.startBtn);
+                        AppCompatButton endTime = dialogAdd.findViewById(R.id.endBtn);
+                        TextView startTxt = dialogAdd.findViewById(R.id.startTime);
+                        TextView endTxt = dialogAdd.findViewById(R.id.endTime);
+                        EditText nameEdit = dialogAdd.findViewById(R.id.nameTodo);
+                        AppCompatButton add = dialogAdd.findViewById(R.id.addBtn);
+                        AppCompatButton cancel = dialogAdd.findViewById(R.id.cancelButton);
+                        dialogAdd.show();
+                        startTxt.setText(todo.getStartTime());
+                        endTxt.setText(todo.getEndTime());
+                        nameEdit.setText(todo.getName());
+                        startTime.setOnClickListener(v->{
+                            MaterialTimePicker picker = showPicker();
+                            picker.show(getSupportFragmentManager(),"Start Time");
+                            picker.addOnPositiveButtonClickListener(v1 -> {
+                                startTxt.setText(picker.getHour()+":"+picker.getMinute());
+                            });
+                        });
+                        endTime.setOnClickListener(v->{
+                            MaterialTimePicker picker = showPicker();
+                            picker.show(getSupportFragmentManager(),"End Time");
+                            picker.addOnPositiveButtonClickListener(v2->{
+                                endTxt.setText(picker.getHour()+":"+picker.getMinute());
+                            });
+                        });
+                        cancel.setOnClickListener(v->{
+                            dialogAdd.dismiss();
+                        });
+                        add.setOnClickListener(v->{
+                            listToDo.clear();
+                            DBHelper db = new DBHelper(HomeActivity.this);
+                            int idUser = idCurrent;
+                            String name = nameEdit.getText().toString();
+                            String start_ = startTxt.getText().toString();
+                            String end_ = endTxt.getText().toString();
+                            Todo todo_ = new Todo(idUser,name,start_,end_, 0);
+                            db.updateTodo(todo_,todo.getId());
+                            listToDo.clear();
+                            getDataFromDB();
+                            initLv();
+                            dialogAdd.dismiss();
+                        });
+                        break;
+                    case R.id.done_btn:
+                        DBHelper db = new DBHelper(HomeActivity.this);
+                        db.isTodoDone(todo,todo.getId());
+                        listToDo.clear();
+                        getDataFromDB();
+                        initLv();
+                        break;
+                }
+                return true;
+            }
+        });
+
+    }
 }

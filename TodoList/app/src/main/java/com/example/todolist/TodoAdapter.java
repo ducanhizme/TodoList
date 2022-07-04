@@ -2,6 +2,7 @@ package com.example.todolist;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,15 +24,17 @@ public class TodoAdapter extends BaseAdapter {
     private ArrayList<Todo> list;
     private int layout;
     private Context mContext;
+    private onMenuItem onMenuItem;
 
-    public TodoAdapter(ArrayList<Todo> list, int layout, Context mContext) {
+    public TodoAdapter(ArrayList<Todo> list, int layout, Context mContext,onMenuItem onMenuItem) {
         this.list = list;
         this.layout = layout;
         this.mContext = mContext;
+        this.onMenuItem = onMenuItem;
     }
 
-    public void updateList(ArrayList<Todo> list){
-        this.list.addAll(list);
+    public void updateList(ArrayList<Todo> data){
+        this.list.addAll(data);
         notifyDataSetChanged();
     }
 
@@ -57,12 +60,13 @@ public class TodoAdapter extends BaseAdapter {
     @SuppressLint("ViewHolder")
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        DBHelper db = new DBHelper(mContext);
+
        LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         convertView = inflater.inflate(layout,null);
         TextView txtNameTodo = convertView.findViewById(R.id.nameTodo);
         TextView txtTimes = convertView.findViewById(R.id.timeS);
         TextView txtTimeE = convertView.findViewById(R.id.timeE);
+        TextView done = convertView.findViewById(R.id.checkDone);
         Todo todo = (Todo) getItem(position);
         txtNameTodo.setText(todo.getName());
         txtTimes.setText(todo.getStartTime());
@@ -70,30 +74,7 @@ public class TodoAdapter extends BaseAdapter {
         ImageButton menuBtn = convertView.findViewById(R.id.menuBtn_i);
         if(menuBtn!=null) {
             menuBtn.setOnClickListener(v -> {
-                PopupMenu popupMenu = new PopupMenu(mContext, v);
-                popupMenu.getMenuInflater().inflate(R.menu.menu, popupMenu.getMenu());
-                popupMenu.show();
-                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @SuppressLint("NonConstantResourceId")
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        switch (item.getItemId()) {
-                            case R.id.delete_btn:
-                                db.deleteTodo(todo);
-                                list.remove(todo);
-                                notifyDataSetChanged();
-                                break;
-                            case R.id.update_btn:
-                                Toast.makeText(mContext, "update", Toast.LENGTH_SHORT).show();
-                                break;
-                            case R.id.done_btn:
-                                Toast.makeText(mContext, "done", Toast.LENGTH_SHORT).show();
-                                break;
-                        }
-                        return true;
-                    }
-                });
-
+                onMenuItem.onClickMenu(todo,v);
             });
         }
         return convertView;

@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.CalendarView;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -51,7 +50,6 @@ public class CalendarActivity extends AppCompatActivity implements onMenuItem {
 
     private String getDateFromCal(){
         long timesMilliseconds = cv.getDate();
-        Toast.makeText(this, timesMilliseconds+"", Toast.LENGTH_SHORT).show();
         Date d = new Date(timesMilliseconds);
         SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy", new Locale("vi","VN"));
         return format.format(d);
@@ -86,7 +84,7 @@ public class CalendarActivity extends AppCompatActivity implements onMenuItem {
     }
 
     private void initLv() {
-        adapter = new TodoAdapter(listTodo,R.layout.layout_cal,this);
+        adapter = new TodoAdapter(listTodo,R.layout.layout_cal,this,this);
         lv.setAdapter(adapter);
 
     }
