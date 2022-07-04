@@ -28,7 +28,7 @@ import java.util.Locale;
 import java.util.Objects;
 
 
-public class HomeActivity extends AppCompatActivity implements onMenuItem{
+public class HomeActivity extends AppCompatActivity{
     private String username ;
     private TextView userNameTXT;
     private TextView todayTxt;
@@ -94,7 +94,7 @@ public class HomeActivity extends AppCompatActivity implements onMenuItem{
     }
 
     private void initLv() {
-        adapter = new TodoAdapter(listToDo,R.layout.layout_today,this,this);
+        adapter = new TodoAdapter(listToDo,R.layout.layout_today,this);
         lvToday.setAdapter(adapter);
     }
 
@@ -143,9 +143,8 @@ public class HomeActivity extends AppCompatActivity implements onMenuItem{
             Todo todo = new Todo(idUser,name,start_,end_, false);
             Toast.makeText(this, todo.toString(), Toast.LENGTH_SHORT).show();
             db.insertToDo(todo);
-            this.listToDo.clear();
-            getDataFromDB();
-            adapter.updateList(listToDo);
+            listToDo.add(todo);
+            adapter.notifyDataSetChanged();
             dialogAdd.dismiss();
         });
     }
@@ -210,28 +209,4 @@ public class HomeActivity extends AppCompatActivity implements onMenuItem{
     }
 
 
-    @Override
-    public void onClickMenu(Todo todo, View view) {
-        PopupMenu popupMenu = new PopupMenu(this,view);
-        popupMenu.getMenuInflater().inflate(R.menu.menu, popupMenu.getMenu());
-        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @SuppressLint("NonConstantResourceId")
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()){
-                    case R.id.delete_btn:
-                        listToDo.remove(todo);
-                        break;
-                    case R.id.update_btn:
-                        Toast.makeText(HomeActivity.this, "update", Toast.LENGTH_SHORT).show();
-                        break;
-                    case R.id.done_btn:
-                        Toast.makeText(HomeActivity.this, "done", Toast.LENGTH_SHORT).show();
-                        break;
-                }
-                return true;
-            }
-        });
-        popupMenu.show();
-    }
 }

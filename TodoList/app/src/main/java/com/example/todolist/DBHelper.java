@@ -108,7 +108,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public ArrayList<Todo> getToDoByDate(int idUser_, String date_){
         ArrayList<Todo> listTodo = new ArrayList<>();
         SQLiteDatabase db = getReadableDatabase();
-        String query = "SELECT * FROM "+TB_TODO+" WHERE "+_ID_USER +"= ? AND " +_DATE +" = ?";
+        String query = "SELECT * FROM "+TB_TODO_USER+" WHERE "+_ID_USER +"= ? AND " +_DATE +" = ?";
         Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(idUser_),date_});
         while (cursor.moveToNext()){
             int id = cursor.getInt(0);
@@ -123,6 +123,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public boolean deleteTodo(Todo todo){
-        
+        SQLiteDatabase db = getWritableDatabase();
+        return db.delete(TB_TODO_USER,_ID_TODO+"="+todo.getId(),null)>0;
     }
 }

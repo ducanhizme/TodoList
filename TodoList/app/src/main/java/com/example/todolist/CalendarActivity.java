@@ -86,7 +86,7 @@ public class CalendarActivity extends AppCompatActivity implements onMenuItem {
     }
 
     private void initLv() {
-        adapter = new TodoAdapter(listTodo,R.layout.layout_cal,this,this);
+        adapter = new TodoAdapter(listTodo,R.layout.layout_cal,this);
         lv.setAdapter(adapter);
 
     }

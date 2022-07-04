@@ -20,7 +20,7 @@
             android:textSize="20sp"
             android:textAlignment="viewStart"/>
         <ImageButton
-            android:id="@+id/menuBtn"
+            android:id="@+id/menuBtn_i"
             android:backgroundTint="@android:color/transparent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
